@@ -1,0 +1,29 @@
+name: Daily Commit Workflow
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "DevSync Bot"
+          git config --global user.email "24f2006109@ds.study.iitm.ac.in"
+
+      - name: Create commit step for 24f2006109@ds.study.iitm.ac.in
+        run: |
+          echo "Daily automated commit - $(date)" >> DAILY_LOG.txt
+          git add DAILY_LOG.txt
+          git commit -m "Daily commit by workflow"
+
+      - name: Push changes
+        run: git push
